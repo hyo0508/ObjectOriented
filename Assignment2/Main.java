@@ -163,11 +163,7 @@ public class Main {
                                 
                                 recordOutput =  new BufferedWriter(
                                         new FileWriter("reservationRecord.csv", true));
-                                recordOutput.write(name + ",");
-                                recordOutput.write(id + ",");
-                                recordOutput.write(roomNum + ",");
-                                recordOutput.write(time + ",");
-                                recordOutput.write(reason + "\n");
+                                recordOutput.write(name + "," + id + "," + roomNum + "," + time + "," + reason + "\r\n");
                                 recordOutput.close();
                                 
                                 reservationUpdate(reservation);
@@ -201,7 +197,6 @@ public class Main {
                             if (roomNum == reservation.getRoomNum()) {
                                 timeIndex = Integer.parseInt(time.substring(2, 3)) * 2 - 2;
                                 if (time.charAt(4) == '후') timeIndex++;
-                                System.out.println(timeIndex);
                                 if (!reservation.getPossible(timeIndex)) {
                                     reservation.setPossible(timeIndex, true);
                                     
@@ -266,6 +261,7 @@ public class Main {
 
             BufferedReader recordInput = new BufferedReader(new FileReader("reservationRecord.csv"));
             String line;
+            boolean check = true;
             while ((line = recordInput.readLine()) != null) {
                 StringTokenizer st = new StringTokenizer(line, ",");
                 if (name.equals(st.nextToken()) && id == Integer.parseInt(st.nextToken())) {
@@ -274,10 +270,11 @@ public class Main {
                             ", 호실번호: " + st.nextToken() +
                             ", 시간: " + st.nextToken() +
                             ", 예약사유: " + st.nextToken());
-                    return;
+                    check = false;
                 }
             }
-            System.out.println("없는 예약입니다. 이름과 아이디를 다시 확인해주세요.");
+            if (check)
+                System.out.println("없는 예약입니다. 이름과 아이디를 다시 확인해주세요.");
         }
     }
 
